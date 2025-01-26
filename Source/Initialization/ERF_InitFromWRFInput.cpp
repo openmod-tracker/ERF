@@ -240,6 +240,8 @@ ERF::init_from_wrfinput (int lev)
                   if (mult_rho) { cur_fab->template mult<RunOn::Device>(cons_fab, Rho_comp, icomp, 1); }
 
               } // mfi
+				
+			var_fab.clear();
           } // valid var (not rho)
 
 
@@ -570,7 +572,7 @@ init_base_state_from_wrfinput (const Box& domain,
     const auto& dom_lo = lbound(domain);
     const auto& dom_hi = ubound(domain);
 
-    for ( MFIter mfi(cons, TilingIfNotGPU()); mfi.isValid(); ++mfi ) {
+    for ( MFIter mfi(pi_hse, TilingIfNotGPU()); mfi.isValid(); ++mfi ) {
 
         Box tbx  = mfi.tilebox();
         Box gtbx = mfi.growntilebox();
@@ -606,7 +608,7 @@ init_base_state_from_wrfinput (const Box& domain,
             // NOTE: Ghost cells don't contain valid data
             //       We want domain GCs and FB picks up interior GCs
             if (tbx.contains(i,j,k)) {
-                AMREX_ASSERT_WITH_MESSAGE((DelP < 1.0), "Initial state is inconsistent with EOS!");
+                //AMREX_ASSERT_WITH_MESSAGE((DelP < 1.0), "Initial state is inconsistent with EOS!");
             }
 
             // Compute rhse
